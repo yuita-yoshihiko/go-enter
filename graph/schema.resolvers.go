@@ -20,8 +20,12 @@ func (r *mutationResolver) CreateBook(ctx context.Context, input model.NewBook) 
 func (r *queryResolver) Books(ctx context.Context) ([]*model.Book, error) {
 	return []*model.Book{
 		{
-			ID:   "TODO-1",
-			Title: "My Todo 1",
+			ID:   "1",
+			Title: "漫画1",
+		},
+		{
+			ID:   "2",
+			Title: "漫画2",
 		},
 	}, nil
 }
