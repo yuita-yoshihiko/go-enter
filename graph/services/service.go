@@ -14,9 +14,10 @@ type Services interface {
 }
 
 type BookService interface {
-	GetBookByID(ctx context.Context, id string) (*model.Book, error)
+	GetBookByID(ctx context.Context, id int) (*model.Book, error)
 	GetBookByTitle(ctx context.Context, title string) (*model.Book, error)
-	ListBooksByID(ctx context.Context, IDs []string) ([]*model.Book, error)
+	ListBooksByID(ctx context.Context, IDs []int) ([]*model.Book, error)
+  CreateBook(ctx context.Context, input *model.NewBook) (*model.Book, error)
 }
 
 

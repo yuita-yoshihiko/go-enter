@@ -785,7 +785,7 @@ func testLikesSelect(t *testing.T) {
 }
 
 var (
-	likeDBTypes = map[string]string{`ID`: `character varying`, `UserID`: `character varying`, `BookID`: `character varying`, `CreatedAt`: `timestamp without time zone`, `UpdatedAt`: `timestamp without time zone`}
+	likeDBTypes = map[string]string{`ID`: `integer`, `UserID`: `integer`, `BookID`: `integer`, `CreatedAt`: `timestamp without time zone`, `UpdatedAt`: `timestamp without time zone`}
 	_           = bytes.MinRead
 )
 

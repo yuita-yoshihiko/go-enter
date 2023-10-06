@@ -6,28 +6,26 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"go-enter/graph/model"
 	"go-enter/internal"
 )
 
 // CreateBook is the resolver for the createBook field.
 func (r *mutationResolver) CreateBook(ctx context.Context, input model.NewBook) (*model.Book, error) {
-	panic(fmt.Errorf("not implemented: CreateBook - createBook"))
+	book, err := r.Srv.CreateBook(ctx, &input)
+    if err != nil {
+        return nil, err
+    }
+    return book, nil
 }
 
 // Books is the resolver for the books field.
 func (r *queryResolver) Books(ctx context.Context) ([]*model.Book, error) {
-	return []*model.Book{
-		{
-			ID:   "1",
-			Title: "漫画1",
-		},
-		{
-			ID:   "2",
-			Title: "漫画2",
-		},
-	}, nil
+	books, err := r.Srv.ListBooksByID(ctx, []int{1, 2, 3})
+		if err != nil {
+				return nil, err
+		}
+		return books, nil
 }
 
 // Mutation returns internal.MutationResolver implementation.

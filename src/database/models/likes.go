@@ -23,9 +23,9 @@ import (
 
 // Like is an object representing the database table.
 type Like struct {
-	ID        string    `boil:"id" json:"id" toml:"id" yaml:"id"`
-	UserID    string    `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
-	BookID    string    `boil:"book_id" json:"book_id" toml:"book_id" yaml:"book_id"`
+	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
+	UserID    int       `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
+	BookID    int       `boil:"book_id" json:"book_id" toml:"book_id" yaml:"book_id"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
@@ -50,15 +50,15 @@ var LikeColumns = struct {
 // Generated where
 
 var LikeWhere = struct {
-	ID        whereHelperstring
-	UserID    whereHelperstring
-	BookID    whereHelperstring
+	ID        whereHelperint
+	UserID    whereHelperint
+	BookID    whereHelperint
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperstring{field: "\"likes\".\"id\""},
-	UserID:    whereHelperstring{field: "\"likes\".\"user_id\""},
-	BookID:    whereHelperstring{field: "\"likes\".\"book_id\""},
+	ID:        whereHelperint{field: "\"likes\".\"id\""},
+	UserID:    whereHelperint{field: "\"likes\".\"user_id\""},
+	BookID:    whereHelperint{field: "\"likes\".\"book_id\""},
 	CreatedAt: whereHelpertime_Time{field: "\"likes\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"likes\".\"updated_at\""},
 }
@@ -88,8 +88,8 @@ type likeL struct{}
 
 var (
 	likeAllColumns            = []string{"id", "user_id", "book_id", "created_at", "updated_at"}
-	likeColumnsWithoutDefault = []string{"id", "user_id", "book_id", "created_at", "updated_at"}
-	likeColumnsWithDefault    = []string{}
+	likeColumnsWithoutDefault = []string{"user_id", "book_id", "created_at", "updated_at"}
+	likeColumnsWithDefault    = []string{"id"}
 	likePrimaryKeyColumns     = []string{"id"}
 )
 
@@ -700,7 +700,7 @@ func Likes(mods ...qm.QueryMod) likeQuery {
 
 // FindLike retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindLike(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Like, error) {
+func FindLike(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Like, error) {
 	likeObj := &Like{}
 
 	sel := "*"
@@ -1218,7 +1218,7 @@ func (o *LikeSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // LikeExists checks if the Like row exists.
-func LikeExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func LikeExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"likes\" where \"id\"=$1 limit 1)"
 

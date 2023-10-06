@@ -25,11 +25,11 @@ func main() {
 		port = defaultPort
 	}
 
-	host := "localhost"
+	host := "db"
 	dbport := 5432
-	user := "your_username"
-	password := "your_password"
-	dbname := "your_dbname"
+	user := "postgres"
+	password := "password"
+	dbname := "postgres"
 
 	// Create a connection string
 	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, dbport, user, password, dbname)

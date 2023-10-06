@@ -23,7 +23,7 @@ import (
 
 // Book is an object representing the database table.
 type Book struct {
-	ID        string    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Title     string    `boil:"title" json:"title" toml:"title" yaml:"title"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
@@ -45,6 +45,22 @@ var BookColumns = struct {
 }
 
 // Generated where
+
+type whereHelperint struct{ field string }
+
+func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint) IN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
 
 type whereHelperstring struct{ field string }
 
@@ -84,12 +100,12 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 }
 
 var BookWhere = struct {
-	ID        whereHelperstring
+	ID        whereHelperint
 	Title     whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
-	ID:        whereHelperstring{field: "\"books\".\"id\""},
+	ID:        whereHelperint{field: "\"books\".\"id\""},
 	Title:     whereHelperstring{field: "\"books\".\"title\""},
 	CreatedAt: whereHelpertime_Time{field: "\"books\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"books\".\"updated_at\""},
@@ -117,8 +133,8 @@ type bookL struct{}
 
 var (
 	bookAllColumns            = []string{"id", "title", "created_at", "updated_at"}
-	bookColumnsWithoutDefault = []string{"id", "title", "created_at", "updated_at"}
-	bookColumnsWithDefault    = []string{}
+	bookColumnsWithoutDefault = []string{"title", "created_at", "updated_at"}
+	bookColumnsWithDefault    = []string{"id"}
 	bookPrimaryKeyColumns     = []string{"id"}
 )
 
@@ -574,7 +590,7 @@ func Books(mods ...qm.QueryMod) bookQuery {
 
 // FindBook retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindBook(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Book, error) {
+func FindBook(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Book, error) {
 	bookObj := &Book{}
 
 	sel := "*"
@@ -1092,7 +1108,7 @@ func (o *BookSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // BookExists checks if the Book row exists.
-func BookExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+func BookExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"books\" where \"id\"=$1 limit 1)"
 
