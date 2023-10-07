@@ -21,6 +21,7 @@ type Like {
 
 type Query {
   books: [Book!]!
+  book(id: ID!): Book
 }
 
 input NewBook {

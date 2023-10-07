@@ -6,26 +6,43 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"go-enter/graph/model"
 	"go-enter/internal"
+	"strconv"
 )
 
 // CreateBook is the resolver for the createBook field.
 func (r *mutationResolver) CreateBook(ctx context.Context, input model.NewBook) (*model.Book, error) {
 	book, err := r.Srv.CreateBook(ctx, &input)
-    if err != nil {
-        return nil, err
-    }
-    return book, nil
+	if err != nil {
+		return nil, err
+	}
+	return book, nil
 }
 
 // Books is the resolver for the books field.
 func (r *queryResolver) Books(ctx context.Context) ([]*model.Book, error) {
-	books, err := r.Srv.ListBooksByID(ctx, []int{1, 2, 3})
-		if err != nil {
-				return nil, err
-		}
-		return books, nil
+	books, err := r.Srv.GetAllBooks(ctx)
+	if err != nil {
+			return nil, fmt.Errorf("queryResolver: failed to get all books: %w", err)
+	}
+	return books, nil
+}
+
+// Book is the resolver for the book field.
+func (r *queryResolver) Book(ctx context.Context, id string) (*model.Book, error) {
+	intID, err := strconv.Atoi(id)
+	if err != nil {
+		// Handle error during string to int conversion.
+		return nil, fmt.Errorf("invalid ID format: %v", err)
+	}
+
+	book, err := r.Srv.GetBookByID(ctx, intID)
+	if err != nil {
+		return nil, err
+	}
+	return book, nil
 }
 
 // Mutation returns internal.MutationResolver implementation.

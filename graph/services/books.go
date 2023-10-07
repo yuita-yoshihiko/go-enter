@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"log"
+	"fmt"
 	"strconv"
 
 	"go-enter/src/database/models"
@@ -53,13 +54,10 @@ func (u *bookService) GetBookByTitle(ctx context.Context, title string) (*model.
 	return convertBook(book), nil
 }
 
-func (u *bookService) ListBooksByID(ctx context.Context, IDs []int) ([]*model.Book, error) {
-	books, err := models.Books(
-		qm.Select(models.BookColumns.ID, models.BookColumns.Title),
-		models.BookWhere.ID.IN(IDs),
-	).All(ctx, u.exec)
+func (u *bookService) GetAllBooks(ctx context.Context) ([]*model.Book, error) {
+	books, err := models.Books().All(ctx, u.exec)
 	if err != nil {
-		return nil, err
+			return nil, fmt.Errorf("error fetching all books: %w", err)
 	}
 	return convertBookSlice(books), nil
 }
