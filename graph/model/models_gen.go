@@ -5,6 +5,7 @@ package model
 type Book struct {
 	ID    string `json:"id"`
 	Title string `json:"title"`
+	Genre string `json:"genre"`
 }
 
 type Like struct {
@@ -15,6 +16,7 @@ type Like struct {
 
 type NewBook struct {
 	Title string `json:"title"`
+	Genre string `json:"genre"`
 }
 
 type User struct {

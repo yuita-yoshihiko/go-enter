@@ -11,6 +11,7 @@ type User {
 type Book {
   id: ID!
   title: String!
+  genre: String!
 }
 
 type Like {
@@ -20,14 +21,15 @@ type Like {
 }
 
 type Query {
-  books: [Book!]!
-  book(id: ID!): Book
+  Books: [Book!]!
+  Book(id: ID!): Book
 }
 
 input NewBook {
   title: String!
+  genre: String!
 }
 
 type Mutation {
-  createBook(input: NewBook!): Book!
+  CreateBook(input: NewBook!): Book!
 }

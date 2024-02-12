@@ -25,6 +25,7 @@ import (
 type Book struct {
 	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Title     string    `boil:"title" json:"title" toml:"title" yaml:"title"`
+	Genre     string    `boil:"genre" json:"genre" toml:"genre" yaml:"genre"`
 	CreatedAt time.Time `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
 	UpdatedAt time.Time `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
@@ -35,11 +36,13 @@ type Book struct {
 var BookColumns = struct {
 	ID        string
 	Title     string
+	Genre     string
 	CreatedAt string
 	UpdatedAt string
 }{
 	ID:        "id",
 	Title:     "title",
+	Genre:     "genre",
 	CreatedAt: "created_at",
 	UpdatedAt: "updated_at",
 }
@@ -102,11 +105,13 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 var BookWhere = struct {
 	ID        whereHelperint
 	Title     whereHelperstring
+	Genre     whereHelperstring
 	CreatedAt whereHelpertime_Time
 	UpdatedAt whereHelpertime_Time
 }{
 	ID:        whereHelperint{field: "\"books\".\"id\""},
 	Title:     whereHelperstring{field: "\"books\".\"title\""},
+	Genre:     whereHelperstring{field: "\"books\".\"genre\""},
 	CreatedAt: whereHelpertime_Time{field: "\"books\".\"created_at\""},
 	UpdatedAt: whereHelpertime_Time{field: "\"books\".\"updated_at\""},
 }
@@ -132,8 +137,8 @@ func (*bookR) NewStruct() *bookR {
 type bookL struct{}
 
 var (
-	bookAllColumns            = []string{"id", "title", "created_at", "updated_at"}
-	bookColumnsWithoutDefault = []string{"title", "created_at", "updated_at"}
+	bookAllColumns            = []string{"id", "title", "genre", "created_at", "updated_at"}
+	bookColumnsWithoutDefault = []string{"title", "genre", "created_at", "updated_at"}
 	bookColumnsWithDefault    = []string{"id"}
 	bookPrimaryKeyColumns     = []string{"id"}
 )

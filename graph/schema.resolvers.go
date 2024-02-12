@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"go-enter/graph/model"
 	"go-enter/internal"
 	"strconv"
@@ -25,7 +24,7 @@ func (r *mutationResolver) CreateBook(ctx context.Context, input model.NewBook) 
 func (r *queryResolver) Books(ctx context.Context) ([]*model.Book, error) {
 	books, err := r.Srv.GetAllBooks(ctx)
 	if err != nil {
-			return nil, fmt.Errorf("queryResolver: failed to get all books: %w", err)
+		return nil, err
 	}
 	return books, nil
 }
@@ -34,10 +33,8 @@ func (r *queryResolver) Books(ctx context.Context) ([]*model.Book, error) {
 func (r *queryResolver) Book(ctx context.Context, id string) (*model.Book, error) {
 	intID, err := strconv.Atoi(id)
 	if err != nil {
-		// Handle error during string to int conversion.
-		return nil, fmt.Errorf("invalid ID format: %v", err)
+		return nil, err
 	}
-
 	book, err := r.Srv.GetBookByID(ctx, intID)
 	if err != nil {
 		return nil, err

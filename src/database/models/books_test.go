@@ -722,7 +722,7 @@ func testBooksSelect(t *testing.T) {
 }
 
 var (
-	bookDBTypes = map[string]string{`ID`: `integer`, `Title`: `character varying`, `CreatedAt`: `timestamp without time zone`, `UpdatedAt`: `timestamp without time zone`}
+	bookDBTypes = map[string]string{`ID`: `integer`, `Title`: `character varying`, `Genre`: `character varying`, `CreatedAt`: `timestamp without time zone`, `UpdatedAt`: `timestamp without time zone`}
 	_           = bytes.MinRead
 )
 
